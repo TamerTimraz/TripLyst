@@ -5,10 +5,11 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { createSupabaseBrowserClient } from "@/lib/supabase/client"
-import { redirect } from "next/navigation"
+import { useAuthModal } from "@/components/auth-modal-context"
 
 export function SignUpForm() {
   const supabase = createSupabaseBrowserClient()
+  const { openSignIn} = useAuthModal()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -18,16 +19,28 @@ export function SignUpForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
     if (password !== confirmPassword) {
       setMessage("Passwords do not match")
       return
     }
-    setIsLoading(true)
-    // Handle sign up logic here
-    setTimeout(() => setIsLoading(false), 1000)
 
+    setIsLoading(true)
+
+    // Supabase sign up
     const { error } = await supabase.auth.signUp({ email, password })
-    setMessage(error ? error.message : "Successfully signed up!")
+
+    setIsLoading(false)
+    if (error) {
+      setMessage(error.message)
+      return
+    }
+    
+    setMessage("Account created! Please sign in.")
+
+    setTimeout(() => {
+      openSignIn()
+    }, 1000)
   }
 
   return (
@@ -58,7 +71,7 @@ export function SignUpForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
+          placeholder="••••••"
           className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           required
         />
@@ -73,7 +86,7 @@ export function SignUpForm() {
           type="password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
-          placeholder="••••••••"
+          placeholder="••••••"
           className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           required
         />
@@ -82,7 +95,7 @@ export function SignUpForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+        className="w-full bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
       >
         {isLoading ? "Creating account..." : "Sign Up"}
       </Button>

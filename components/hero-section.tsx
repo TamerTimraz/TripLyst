@@ -1,12 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import { useAuthModal } from "@/components/auth-modal-context"
 
-interface HeroSectionProps {
-  onGetStarted: () => void
-}
+export function HeroSection() {
+  const { openSignUp } = useAuthModal()
 
-export function HeroSection({ onGetStarted }: HeroSectionProps) {
   return (
     <section className="bg-background py-20 md:py-32">
       <div className="container mx-auto px-4">
@@ -21,16 +20,16 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              onClick={onGetStarted}
+              onClick={openSignUp}
               size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-base cursor-pointer"
             >
               Get Started for Free
             </Button>
             <Button
               variant="outline"
               size="lg"
-              className="text-base border-border text-foreground hover:bg-muted bg-transparent"
+              className="text-base border-border text-foreground hover:bg-muted bg-transparent cursor-pointer"
             >
               Explore Itineraries
             </Button>

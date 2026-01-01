@@ -6,9 +6,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { createSupabaseBrowserClient } from "@/lib/supabase/client"
 import { redirect } from "next/navigation"
+import { useAuthModal } from "@/components/auth-modal-context"
 
 export function SignInForm() {
   const supabase = createSupabaseBrowserClient()
+  const { close } = useAuthModal()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -17,17 +19,22 @@ export function SignInForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsLoading(true)
-    // Handle sign in logic here
-    setTimeout(() => setIsLoading(false), 1000)
 
+    setIsLoading(true)
+
+    // Supabase sign in
     const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+    setIsLoading(false)
+
     if (error) {
-        setMessage(error.message)
-    } else {
-        setMessage("Signed in successfully!")
-        redirect("/home")
+      setMessage(error.message)
+      return
     }
+
+    setMessage("Signed in successfully!")
+    close()
+    redirect("/home")
   }
 
   return (
@@ -58,7 +65,7 @@ export function SignInForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
+          placeholder="••••••"
           className="w-full px-4 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
           required
         />
@@ -67,7 +74,7 @@ export function SignInForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+        className="w-full bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
       >
         {isLoading ? "Signing in..." : "Sign In"}
       </Button>
