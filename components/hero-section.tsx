@@ -8,7 +8,7 @@ interface HeroSectionProps {
 
 export function HeroSection({ onGetStarted }: HeroSectionProps) {
   return (
-    <section className="bg-linear-to-b from-accent/20 to-background py-20 md:py-32">
+    <section className="bg-background py-20 md:py-32">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <div className="space-y-4">
@@ -38,7 +38,7 @@ export function HeroSection({ onGetStarted }: HeroSectionProps) {
 
           {/* Hero Image */}
           <div className="mt-12 rounded-2xl overflow-hidden border border-border shadow-lg">
-            <img src="/travelers-exploring-beautiful-destinations.jpg" alt="Travel inspiration" className="w-full h-auto" />
+            <img src="/hero_image.jpg" alt="Travel inspiration" className="w-full h-auto" />
           </div>
         </div>
       </div>
