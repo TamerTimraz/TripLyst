@@ -1,10 +1,11 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PlaneTakeoff } from "lucide-react"
+import { PlaneTakeoff, Plus, Bookmark } from "lucide-react"
 import { useAuth } from "@/lib/use-auth"
 import { useAuthModal } from "@/components/auth-modal-context"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function Navbar() {
   const router = useRouter()
@@ -28,10 +29,31 @@ export function Navbar() {
           <span className="text-xl font-bold text-foreground">TripLyst</span>
         </div>
 
-        {/* Auth actions */}
+        {/* Authenticated User */}
         <div className="flex items-center gap-3">
           {!loading && user ? (
             <>
+              <div className="hidden md:flex items-center gap-8">
+                <Link
+                  href="/my-itineraries"
+                  className="text-foreground hover:text-foreground/80 transition-colors font-medium"
+                >
+                  My Itineraries
+                </Link>
+
+                <div onClick={() => router.push("/saved")} className="flex items-center gap-1 cursor-pointer">
+                    <Bookmark className="h-4 w-4" />
+                    <span className="font-medium text-foreground hover:text-foreground/80 transition-colors">Saved</span>
+                </div>
+
+                <Button asChild className="gap-2">
+                  <Link href="/create">
+                    <Plus className="h-4 w-4" />
+                    Create Itinerary
+                  </Link>
+                </Button>
+              </div>
+
               <Button className="cursor-pointer"
                 variant="outline"
                 onClick={async () => {
@@ -44,7 +66,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              {/* Navigation Links */}
+              {/* Non-Authenticated User */}
               <div className="hidden md:flex items-center gap-8">
                 <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
                   Features
