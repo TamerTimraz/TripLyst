@@ -37,7 +37,7 @@ export function HeroSection() {
 
           {/* Hero Image */}
           <div className="mt-12 rounded-2xl overflow-hidden border border-border shadow-lg">
-            <img src="/hero_image.jpg" alt="Travel inspiration" className="w-full h-auto" />
+            <img src="/images/hero_image.jpg" alt="Travel inspiration" className="w-full h-auto" />
           </div>
         </div>
       </div>

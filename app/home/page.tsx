@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
-import SignOutButton from "./SignOutButton"
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient()
@@ -17,7 +16,6 @@ export default async function Home() {
     <div>
       <h1>Dashboard</h1>
       <p>Logged in as {user.email}</p>
-      <SignOutButton />
     </div>
   )
 }

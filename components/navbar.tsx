@@ -33,12 +33,6 @@ export function Navbar() {
           {!loading && user ? (
             <>
               <Button className="cursor-pointer"
-                variant="ghost"
-                onClick={() => router.push("/dashboard")}
-              >
-                Dashboard
-              </Button>
-              <Button className="cursor-pointer"
                 variant="outline"
                 onClick={async () => {
                   await signOut()
