@@ -34,7 +34,37 @@ export async function proxy(request: NextRequest) {
   // IMPORTANT:
   // This keeps the Supabase session in sync between server and browser.
   // Do not run any code between client creation and this call.
-  await supabase.auth.getUser() // refreshes the auth session
+  const {
+    data: { user },
+  } = await supabase.auth.getUser() // refreshes the auth session
+
+  const { pathname } = request.nextUrl
+
+  // Redirect unauthenticated users to the landing page
+  if (!user && pathname !== '/'){
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/'
+    return NextResponse.redirect(redirectUrl)
+  }
+
+  // Prevent authenticated users from accessing the landing page
+  if (user && pathname === '/') {
+    const redirectUrl = request.nextUrl.clone()
+    redirectUrl.pathname = '/home'
+    return NextResponse.redirect(redirectUrl)
+  }
 
   return response
+}
+
+export const config = {
+  matcher: [
+    /*
+     * Run on all routes except:
+     * - _next (static files)
+     * - images
+     * - favicon
+     */
+    '/((?!_next/static|_next/image|favicon.ico|images).*)',
+  ],
 }
