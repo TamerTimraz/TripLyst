@@ -6,10 +6,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { createSupabaseBrowserClient } from "@/lib/supabase/client"
 import { useAuthModal } from "@/components/auth-modal-context"
+import { redirect } from "next/navigation"
 
 export function SignUpForm() {
   const supabase = createSupabaseBrowserClient()
-  const { openSignIn} = useAuthModal()
+  const { close } = useAuthModal()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -36,11 +37,9 @@ export function SignUpForm() {
       return
     }
     
-    setMessage("Account created! Please sign in.")
-
-    setTimeout(() => {
-      openSignIn()
-    }, 1000)
+    setMessage("Account created!")
+    close()
+    redirect("/home")
   }
 
   return (
