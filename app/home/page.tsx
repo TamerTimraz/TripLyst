@@ -3,6 +3,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { Search, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ItineraryCard } from "@/components/itinerary-card"
+import { Itinerary } from "@/types"
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient()
@@ -20,6 +21,7 @@ export default async function Home() {
     .select("*")
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
+    .overrideTypes<Itinerary[]>()
 
   if (error) {
     console.error("Error fetching itineraries:", error.message)

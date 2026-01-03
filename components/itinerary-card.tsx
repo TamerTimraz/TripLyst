@@ -4,18 +4,9 @@ import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Bookmark, Heart } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
+import { Itinerary } from "@/types"
 
-interface ItineraryCardProps {
-  id: string
-  account_id: string
-  title: string
-  destination: string
-  start_date: string
-  end_date: string
-  visibility: string
-  created_at: string
-  updated_at: string
-}
+type ItineraryCardProps = Itinerary
 
 export async function ItineraryCard({ title, destination, start_date, end_date, account_id, created_at }: ItineraryCardProps) {
   const supabase = await createSupabaseServerClient()
