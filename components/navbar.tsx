@@ -17,11 +17,12 @@ export function Navbar() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <div
-          onClick={async () => {
-            await signOut()
-            router.push("/")
+          onClick={() => {
+            if (!loading && user){
+              router.push("/home")
+            }
           }}
-          className="flex items-center gap-2 cursor-pointer"
+          className={`flex items-center gap-2 ${user ? "cursor-pointer": "cursor-default"}`}
         >
           <div className="w-8 h-8 bg-linear-to-br from-accent to-accent rounded-lg flex items-center justify-center">
             <span className="text-accent-foreground font-bold text-lg"><PlaneTakeoff /></span>
@@ -34,6 +35,13 @@ export function Navbar() {
           {!loading && user ? (
             <>
               <div className="hidden md:flex items-center gap-8">
+                <Link
+                  href="/home"
+                  className="text-foreground hover:text-foreground/80 transition-colors font-medium"
+                >
+                  Browse
+                </Link>
+
                 <Link
                   href="/my-itineraries"
                   className="text-foreground hover:text-foreground/80 transition-colors font-medium"
@@ -66,7 +74,7 @@ export function Navbar() {
             </>
           ) : (
             <>
-              {/* Non-Authenticated User */}
+              {/* Non-Authenticated user on landing page */}
               <div className="hidden md:flex items-center gap-8">
                 <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
                   Features
