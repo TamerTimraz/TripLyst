@@ -18,14 +18,18 @@ export function Navbar() {
         {/* Logo */}
         <div
           onClick={() => {
-            if (!loading && user){
+            if (!loading && user) {
               router.push("/home")
             }
           }}
-          className={`flex items-center gap-2 ${user ? "cursor-pointer": "cursor-default"}`}
+          className={`flex items-center gap-2 ${
+            user ? "cursor-pointer" : "cursor-default"
+          }`}
         >
           <div className="w-8 h-8 bg-linear-to-br from-accent to-accent rounded-lg flex items-center justify-center">
-            <span className="text-accent-foreground font-bold text-lg"><PlaneTakeoff /></span>
+            <span className="text-accent-foreground font-bold text-lg">
+              <PlaneTakeoff />
+            </span>
           </div>
           <span className="text-xl font-bold text-foreground">TripLyst</span>
         </div>
@@ -49,9 +53,14 @@ export function Navbar() {
                   My Itineraries
                 </Link>
 
-                <div onClick={() => router.push("/saved")} className="flex items-center gap-1 cursor-pointer">
-                    <Bookmark className="h-4 w-4" />
-                    <span className="font-medium text-foreground hover:text-foreground/80 transition-colors">Saved</span>
+                <div
+                  onClick={() => router.push("/saved-itineraries")}
+                  className="flex items-center gap-1 cursor-pointer"
+                >
+                  <Bookmark className="h-4 w-4" />
+                  <span className="font-medium text-foreground hover:text-foreground/80 transition-colors">
+                    Saved
+                  </span>
                 </div>
 
                 <Button asChild className="gap-2">
@@ -62,7 +71,8 @@ export function Navbar() {
                 </Button>
               </div>
 
-              <Button className="cursor-pointer"
+              <Button
+                className="cursor-pointer"
                 variant="outline"
                 onClick={async () => {
                   await signOut()
@@ -76,15 +86,25 @@ export function Navbar() {
             <>
               {/* Non-Authenticated user on landing page */}
               <div className="hidden md:flex items-center gap-8">
-                <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a
+                  href="#features"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   Features
                 </a>
-                <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
+                <a
+                  href="#how-it-works"
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
                   How it Works
                 </a>
               </div>
 
-              <Button variant="ghost" onClick={openSignIn} className="cursor-pointer">
+              <Button
+                variant="ghost"
+                onClick={openSignIn}
+                className="cursor-pointer"
+              >
                 Sign In
               </Button>
               <Button onClick={openSignUp} className="cursor-pointer">
