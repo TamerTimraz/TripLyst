@@ -27,6 +27,7 @@ export interface Database {
           id: string
           account_id: string
           title: string
+          description: string | null
           destination: string
           start_date: string
           end_date: string
@@ -38,6 +39,7 @@ export interface Database {
           id?: string
           account_id: string
           title: string
+          description: string | null
           destination: string
           start_date: string
           end_date: string
@@ -49,6 +51,7 @@ export interface Database {
           id?: string
           account_id?: string
           title?: string
+          description?: string | null
           destination?: string
           start_date?: string
           end_date?: string
