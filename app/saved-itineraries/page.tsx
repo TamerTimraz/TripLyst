@@ -14,23 +14,25 @@ export default async function SavedItineraries() {
 
   const { data: savedItineraries, error } = await supabase
     .from("itinerary_bookmarks")
-    .select(`
+    .select(
+      `
       itineraries(
         *, 
-        accounts (name, email)
+        accounts (name)
       )
-    `)
+    `
+    )
     .eq("account_id", user.id)
     .order("created_at", { ascending: false })
     .overrideTypes<BookmarkedItineraryWithAccount[]>()
 
-  const itineraries: ItineraryWithAccount[] = savedItineraries?.map((item) => item.itineraries) || []
+  const itineraries: ItineraryWithAccount[] =
+    savedItineraries?.map((item) => item.itineraries) || []
 
-
-    if (error) {
-        console.error("Error fetching itineraries:", error.message)
-        throw new Error("Failed to fetch itineraries")
-    }
+  if (error) {
+    console.error("Error fetching itineraries:", error.message)
+    throw new Error("Failed to fetch itineraries")
+  }
 
   return (
       <div className="min-h-screen bg-background">

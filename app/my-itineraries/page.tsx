@@ -19,7 +19,7 @@ export default async function MyItineraries() {
     .select(
       `
       *,
-      accounts (name, email)`
+      accounts (name)`
     )
     .eq("account_id", user.id)
     .order("created_at", { ascending: false })

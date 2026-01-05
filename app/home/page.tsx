@@ -19,7 +19,7 @@ export default async function Home() {
   const { data: allItineraries, error } = await supabase
     .from("itineraries")
     .select(`*,
-      accounts (name, email)`)
+      accounts (name)`)
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
     .overrideTypes<ItineraryWithAccount[]>()

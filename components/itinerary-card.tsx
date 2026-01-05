@@ -13,10 +13,6 @@ type ItineraryCardProps = ItineraryWithAccount
 export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, accounts }: ItineraryCardProps) {
   const author = accounts
 
-  if (author.name === null) {
-    author.name = author.email.split("@")[0]
-  }
-
   return (
     <Link href={`/itineraries/${id}`} className="no-underline">
       <Card className="group overflow-hidden bg-card hover:shadow-md transition-all duration-300 border border-border/50">
