@@ -1,28 +1,19 @@
+"use client"
+
 import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Bookmark, Heart } from "lucide-react"
 import Image from "next/image"
-import { createSupabaseServerClient } from "@/lib/supabase/server"
-import { Itinerary } from "@/types"
+import { ItineraryWithAccount } from "@/types"
 import Link from "next/link"
 
-type ItineraryCardProps = Itinerary
+type ItineraryCardProps = ItineraryWithAccount
 
-export async function ItineraryCard({ id, title, destination, start_date, end_date, account_id, created_at }: ItineraryCardProps) {
-  const supabase = await createSupabaseServerClient()
-  const { data: author, error } = await supabase
-    .from("accounts")
-    .select("name, email")
-    .eq("id", account_id)
-    .single()
+export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, accounts }: ItineraryCardProps) {
+  const author = accounts
 
-  if (error) {
-    console.error("Error fetching author data:", error.message)
-    throw new Error("Failed to fetch author")
-  }
-
-  if (author.name == null) {
+  if (author.name === null) {
     author.name = author.email.split("@")[0]
   }
 
