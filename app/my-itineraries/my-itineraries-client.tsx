@@ -23,7 +23,7 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container py-12">
+      <div className="container py-12 mx-auto">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
