@@ -6,6 +6,7 @@ import { MapPin, Calendar, Heart, Bookmark, Share2, Clock } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { ItineraryWithDetails } from "@/types"
+import { redirect, notFound } from "next/navigation"
 
 export default async function ItineraryDetailPage({
   params,
@@ -13,6 +14,14 @@ export default async function ItineraryDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+
+  function isValidUUID(id: string) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id)
+  }
+
+  if (!isValidUUID(id)) {
+    notFound()
+  }
 
   const supabase = await createSupabaseServerClient()
 
@@ -32,15 +41,16 @@ export default async function ItineraryDetailPage({
       referencedTable: "itinerary_days.activities",
       ascending: true,
     })
-    .single<ItineraryWithDetails>()
-
+    .maybeSingle<ItineraryWithDetails>()
+  
   if (error) {
     console.error("Error fetching itinerary:", error.message)
     throw new Error("Failed to fetch itinerary")
   }
 
-  if (data.accounts.name == null) {
-    data.accounts.name = data.accounts.email.split("@")[0]
+  // If no Itinerary is returned (private itinerary), redirect to home page
+  if (!data) {
+    redirect("/home")
   }
 
   const duration =
