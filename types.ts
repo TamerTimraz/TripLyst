@@ -1,9 +1,5 @@
 import { Database } from "@/lib/supabase/database.types"
 
-export type BookmarkedItinerary = {
-  itineraries: Database["public"]["Tables"]["itineraries"]["Row"]
-}
-
 export type Itinerary = Database["public"]["Tables"]["itineraries"]["Row"]
 export type ItineraryDay = Database["public"]["Tables"]["itinerary_days"]["Row"]
 export type Activity = Database["public"]["Tables"]["activities"]["Row"]
@@ -14,4 +10,12 @@ export type ItineraryWithDetails = Itinerary & {
   itinerary_days: (ItineraryDay & {
     activities: Activity[]
   })[]
+}
+
+export type ItineraryWithAccount = Itinerary & {
+  accounts: Account
+}
+
+export type BookmarkedItineraryWithAccount = {
+  itineraries: ItineraryWithAccount
 }

@@ -1,7 +1,7 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { ItineraryCard } from "@/components/itinerary-card"
-import { BookmarkedItinerary } from "@/types"
+import { BookmarkedItineraryWithAccount, ItineraryWithAccount } from "@/types"
 
 export default async function SavedItineraries() {
   const supabase = await createSupabaseServerClient()
@@ -14,12 +14,18 @@ export default async function SavedItineraries() {
 
   const { data: savedItineraries, error } = await supabase
     .from("itinerary_bookmarks")
-    .select("itineraries(*)")
+    .select(`
+      itineraries(
+        *, 
+        accounts (name, email)
+      )
+    `)
     .eq("account_id", user.id)
     .order("created_at", { ascending: false })
-    .overrideTypes<BookmarkedItinerary[]>()
+    .overrideTypes<BookmarkedItineraryWithAccount[]>()
 
-  const itineraries = savedItineraries?.map(item => item.itineraries) ?? []
+  const itineraries: ItineraryWithAccount[] = savedItineraries?.map((item) => item.itineraries) || []
+
 
     if (error) {
         console.error("Error fetching itineraries:", error.message)
@@ -47,7 +53,7 @@ export default async function SavedItineraries() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {itineraries.map((itinerary) => (
-                  <ItineraryCard key={itinerary.id} {...itinerary} />
+                  <ItineraryCard key={itinerary.id} {...itinerary}/>
                 ))}
               </div>
             )}

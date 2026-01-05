@@ -3,7 +3,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { Search, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ItineraryCard } from "@/components/itinerary-card"
-import { Itinerary } from "@/types"
+import { ItineraryWithAccount } from "@/types"
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient()
@@ -18,10 +18,11 @@ export default async function Home() {
 
   const { data: allItineraries, error } = await supabase
     .from("itineraries")
-    .select("*")
+    .select(`*,
+      accounts (name, email)`)
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
-    .overrideTypes<Itinerary[]>()
+    .overrideTypes<ItineraryWithAccount[]>()
 
   if (error) {
     console.error("Error fetching itineraries:", error.message)
