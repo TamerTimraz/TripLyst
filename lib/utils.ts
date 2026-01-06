@@ -6,7 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const formatDate = (isoDate: string) => {
-  console.log("The date:", isoDate)
   const [year, month, day] = isoDate.split("-").map(Number)
   return new Date(year, month - 1, day).toLocaleDateString("en-US", {
     weekday: "short",
@@ -16,7 +15,6 @@ export const formatDate = (isoDate: string) => {
 }
 
 export const formatDateNum = (isoDate: string) => {
-  console.log("The date:", isoDate)
   const [year, month, day] = isoDate.split("-").map(Number)
   return new Date(year, month - 1, day).toLocaleDateString("en-US", {
     year: "numeric",
