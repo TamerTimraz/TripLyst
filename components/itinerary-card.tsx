@@ -9,6 +9,7 @@ import { ItineraryListItemWithUser } from "@/types"
 import Link from "next/link"
 import { createSupabaseBrowserClient } from "@/lib/supabase/client"
 import { useState } from "react"
+import { formatDateNum } from "@/lib/utils"
 
 type ItineraryCardProps = ItineraryListItemWithUser
 
@@ -89,8 +90,8 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
             <div className="flex items-center gap-1.5 text-muted-foreground text-sm">
               <Calendar className="h-3.5 w-3.5" />
               <span>
-                {new Date(start_date).toLocaleDateString()} -{" "}
-                {new Date(end_date).toLocaleDateString()}
+                {formatDateNum(start_date)} -{" "}
+                {formatDateNum(end_date)}
               </span>
             </div>
 

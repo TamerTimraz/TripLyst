@@ -7,6 +7,7 @@ import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { ItineraryWithSchedule } from "@/types"
 import { redirect, notFound } from "next/navigation"
+import { formatDate, formatDateNum } from "@/lib/utils"
 
 export default async function ItineraryDetailPage({
   params,
@@ -62,7 +63,7 @@ export default async function ItineraryDetailPage({
 
   const itinerary = { ...data }
 
-  // console.log(itinerary)
+  //console.log(itinerary)
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,8 +91,8 @@ export default async function ItineraryDetailPage({
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
                   <span>
-                    {new Date(itinerary.start_date).toLocaleDateString()} -{" "}
-                    {new Date(itinerary.end_date).toLocaleDateString()}
+                    {formatDateNum(itinerary.start_date)} -{" "}
+                    {formatDateNum(itinerary.end_date)}
                   </span>
                 </div>
               </div>
@@ -128,7 +129,7 @@ export default async function ItineraryDetailPage({
                       {day.day_index + 1}
                     </Badge>
                     <h3 className="text-xl font-semibold">
-                      Day {day.day_index + 1}
+                      Day {day.day_index + 1}: {formatDate(day.date)}
                     </h3>
                   </div>
 
@@ -216,8 +217,8 @@ export default async function ItineraryDetailPage({
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Dates</span>
                   <span className="font-medium">
-                    {new Date(itinerary.start_date).toLocaleDateString()} -{" "}
-                    {new Date(itinerary.end_date).toLocaleDateString()}
+                    {formatDateNum(itinerary.start_date)} -{" "}
+                    {formatDateNum(itinerary.end_date)}
                   </span>
                 </div>
                 <div className="flex justify-between">
