@@ -4,6 +4,7 @@ import { Search, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ItineraryCard } from "@/components/itinerary-card"
 import { ItineraryListItemWithUser } from "@/types"
+import { Input } from "@/components/ui/input"
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient()
@@ -55,7 +56,7 @@ export default async function Home() {
             <div className="flex gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <input
+                <Input
                   placeholder="Search destinations, activities, or travelers..."
                   className="pl-10 h-12 bg-card"
                 />
