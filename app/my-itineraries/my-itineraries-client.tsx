@@ -4,10 +4,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Plus, Globe, Lock } from "lucide-react"
 import { ItineraryCard } from "@/components/itinerary-card"
-import { ItineraryWithAccount } from "@/types"
+import { ItineraryListItemWithUser } from "@/types"
 
 type MyItinerariesClientProps = {
-  myItineraries: ItineraryWithAccount[]
+  myItineraries: ItineraryListItemWithUser[]
 }
 
 export default function MyItinerariesClient({ myItineraries }: MyItinerariesClientProps) {

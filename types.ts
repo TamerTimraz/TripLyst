@@ -4,18 +4,21 @@ export type Itinerary = Database["public"]["Tables"]["itineraries"]["Row"]
 export type ItineraryDay = Database["public"]["Tables"]["itinerary_days"]["Row"]
 export type Activity = Database["public"]["Tables"]["activities"]["Row"]
 export type Account = Database["public"]["Tables"]["accounts"]["Row"]
+export type ItineraryBookmark = Database["public"]["Tables"]["itinerary_bookmarks"]["Row"]
 
-export type ItineraryWithDetails = Itinerary & {
-  accounts: Account
+export type ItineraryWithSchedule = Itinerary & {
+  author: Account
   itinerary_days: (ItineraryDay & {
     activities: Activity[]
   })[]
 }
 
-export type ItineraryWithAccount = Itinerary & {
-  accounts: Account
+export type ItineraryListItemWithUser = Itinerary & {
+  author: Account
+  is_bookmarked: boolean | null
+  current_user_id: string
 }
 
-export type BookmarkedItineraryWithAccount = {
-  itineraries: ItineraryWithAccount
+export type BookmarkedItineraryRow = {
+  itinerary: ItineraryListItemWithUser
 }

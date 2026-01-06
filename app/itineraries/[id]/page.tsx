@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge"
 import { MapPin, Calendar, Heart, Bookmark, Share2, Clock } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
-import { ItineraryWithDetails } from "@/types"
+import { ItineraryWithSchedule } from "@/types"
 import { redirect, notFound } from "next/navigation"
 
 export default async function ItineraryDetailPage({
@@ -33,7 +33,7 @@ export default async function ItineraryDetailPage({
       *,
       activities (*)
     ),
-    accounts (*)
+    author:accounts (*)
     `)
     .eq("id", id)
     .order("day_index", { referencedTable: "itinerary_days", ascending: true })
@@ -41,7 +41,7 @@ export default async function ItineraryDetailPage({
       referencedTable: "itinerary_days.activities",
       ascending: true,
     })
-    .maybeSingle<ItineraryWithDetails>()
+    .maybeSingle<ItineraryWithSchedule>()
   
   if (error) {
     console.error("Error fetching itinerary:", error.message)
@@ -171,15 +171,15 @@ export default async function ItineraryDetailPage({
                   <Avatar className="h-12 w-12">
                     <AvatarImage
                       src={"/placeholder.svg"}
-                      alt={itinerary.accounts.name}
+                      alt={itinerary.author.name}
                     />
                     <AvatarFallback className="bg-primary text-primary-foreground">
-                      {itinerary.accounts.name.slice(0, 2).toUpperCase()}
+                      {itinerary.author.name.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <p className="text-sm text-muted-foreground">Created by</p>
-                    <p className="font-semibold">{itinerary.accounts.name}</p>
+                    <p className="font-semibold">{itinerary.author.name}</p>
                   </div>
                 </div>
 
@@ -190,7 +190,6 @@ export default async function ItineraryDetailPage({
                     className="flex-1 gap-2 bg-transparent"
                   >
                     <Heart className="h-4 w-4" />
-                    <span>{itinerary.likes}</span>
                   </Button>
                   <Button
                     variant="outline"
@@ -198,7 +197,6 @@ export default async function ItineraryDetailPage({
                     className="flex-1 gap-2 bg-transparent"
                   >
                     <Bookmark className="h-4 w-4" />
-                    <span>{itinerary.saves}</span>
                   </Button>
                   <Button variant="outline" size="icon">
                     <Share2 className="h-4 w-4" />

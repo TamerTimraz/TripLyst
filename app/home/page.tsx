@@ -3,7 +3,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { Search, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ItineraryCard } from "@/components/itinerary-card"
-import { ItineraryWithAccount } from "@/types"
+import { ItineraryListItemWithUser } from "@/types"
 
 export default async function Home() {
   const supabase = await createSupabaseServerClient()
@@ -19,15 +19,22 @@ export default async function Home() {
   const { data: allItineraries, error } = await supabase
     .from("itineraries")
     .select(`*,
-      accounts (name)`)
+      author:accounts (name),
+      itinerary_bookmarks!left(itinerary_id, account_id)`)
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
-    .overrideTypes<ItineraryWithAccount[]>()
+    .overrideTypes<ItineraryListItemWithUser[]>()
 
   if (error) {
     console.error("Error fetching itineraries:", error.message)
     throw new Error("Failed to fetch itineraries")
   }
+
+  const itineraries = allItineraries.map((itinerary) => ({
+    ...itinerary,
+    is_bookmarked: itinerary.itinerary_bookmarks && itinerary.itinerary_bookmarks.length > 0,
+    current_user_id: user.id
+  }))
 
   return (
     <div className="min-h-screen bg-background">
@@ -79,7 +86,7 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {allItineraries.map((itinerary) => (
+            {itineraries.map((itinerary) => (
               <ItineraryCard key={itinerary.id} {...itinerary} />
             ))}
           </div>

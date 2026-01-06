@@ -5,13 +5,40 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { MapPin, Calendar, Bookmark, Heart } from "lucide-react"
 import Image from "next/image"
-import { ItineraryWithAccount } from "@/types"
+import { ItineraryListItemWithUser } from "@/types"
 import Link from "next/link"
+import { createSupabaseBrowserClient } from "@/lib/supabase/client"
+import { useState } from "react"
 
-type ItineraryCardProps = ItineraryWithAccount
+type ItineraryCardProps = ItineraryListItemWithUser
 
-export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, accounts }: ItineraryCardProps) {
-  const author = accounts
+export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, author, is_bookmarked, current_user_id }: ItineraryCardProps) {
+  const supabase = createSupabaseBrowserClient()
+
+  const [bookmarked, setBookmarked] = useState(is_bookmarked)
+  
+  const toggleBookmark = async (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    setBookmarked((prev) => !prev) // optimistic update
+
+    const { error } = bookmarked
+      ? await supabase
+          .from("itinerary_bookmarks")
+          .delete()
+          .eq("itinerary_id", id)
+          .eq("account_id", current_user_id)
+      : await supabase.from("itinerary_bookmarks").insert({
+          itinerary_id: id,
+          account_id: current_user_id,
+        })
+
+    if (error) {
+      console.error("Bookmark error:", error)
+      setBookmarked((prev) => !prev) // rollback on failure
+    }
+  }
 
   return (
     <Link href={`/itineraries/${id}`} className="no-underline">
@@ -39,9 +66,10 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
             <Button
               size="icon"
               variant="ghost"
+              onClick={toggleBookmark}
               className="h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white"
             >
-              <Bookmark className="h-4 w-4" />
+              <Bookmark className={bookmarked ? "h-4 w-4 text-yellow-300" : "h-4 w-4"} fill={bookmarked ? "yellow": "none"} />
             </Button>
           </div>
         </div>

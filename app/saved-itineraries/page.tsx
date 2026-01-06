@@ -1,8 +1,8 @@
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { ItineraryCard } from "@/components/itinerary-card"
-import { BookmarkedItineraryWithAccount, ItineraryWithAccount } from "@/types"
-import { Bookmark } from "lucide-react"
+import { BookmarkedItineraryRow, ItineraryListItemWithUser } from "@/types"
+import { Bookmark, Lock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 export default async function SavedItineraries() {
@@ -18,19 +18,21 @@ export default async function SavedItineraries() {
     .from("itinerary_bookmarks")
     .select(
       `
-      itineraries(
+      itinerary:itineraries(
         *, 
-        accounts (name)
+        author:accounts (name)
       )
     `
     )
     .eq("account_id", user.id)
     .order("created_at", { ascending: false })
-    .overrideTypes<BookmarkedItineraryWithAccount[]>()
+    .overrideTypes<BookmarkedItineraryRow[]>()
+  
 
-  const itineraries: ItineraryWithAccount[] =
-    savedItineraries?.map((item) => item.itineraries) || []
-
+  const itineraries: ItineraryListItemWithUser[] =
+    savedItineraries?.map((item) => ({...item.itinerary, is_bookmarked: true, current_user_id: user.id})) || []
+  
+  
   if (error) {
     console.error("Error fetching itineraries:", error.message)
     throw new Error("Failed to fetch itineraries")
@@ -52,7 +54,15 @@ export default async function SavedItineraries() {
         {itineraries.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {itineraries.map((itinerary) => (
-              <ItineraryCard key={itinerary.id} {...itinerary} />
+              <div key={itinerary.id} className="relative">
+                <ItineraryCard {...itinerary} />
+                {itinerary.visibility === "private" && (
+                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-accent/90 backdrop-blur-sm text-xs font-medium flex items-center gap-1">
+                    <Lock className="h-3 w-3" />
+                    Private
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         ) : (
