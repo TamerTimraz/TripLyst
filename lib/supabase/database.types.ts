@@ -66,19 +66,19 @@ export interface Database {
           id: string
           itinerary_id: string
           day_index: number
-          date: string | null
+          date: string
         }
         Insert: {
           id?: string
           itinerary_id: string
           day_index: number
-          date?: string | null
+          date?: string
         }
         Update: {
           id?: string
           itinerary_id?: string
           day_index?: number
-          date?: string | null
+          date?: string
         }
       }
 
