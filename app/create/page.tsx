@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
-import { Calendar, MapPin, Plus, X, Globe, Lock } from "lucide-react"
+import { Calendar, MapPin, Plus, X, Globe, Lock, Upload } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { createItinerary } from "@/app/itineraries/actions"
 
@@ -31,6 +31,8 @@ export default function CreateItineraryPage() {
   const [description, setDescription] = useState("")
   const [days, setDays] = useState<Day[]>([])
   const [isPublic, setIsPublic] = useState(true)
+  const [coverImage, setCoverImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
 
   // Calculate days based on date range
   useEffect(() => {
@@ -88,6 +90,23 @@ export default function CreateItineraryPage() {
     }
   }
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setCoverImage(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const removeImage = () => {
+    setCoverImage(null)
+    setImagePreview(null)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -98,6 +117,7 @@ export default function CreateItineraryPage() {
         startDate,
         endDate,
         visibility: isPublic ? "public" : "private",
+        coverImage,
         days: days.map((day) => ({
             date: day.date,
             activities: day.activities.map((a) => ({
@@ -156,6 +176,48 @@ export default function CreateItineraryPage() {
                     required
                     className="pl-10"
                   />
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-foreground">Cover Image</Label>
+                <div className="mt-1.5">
+                  {imagePreview ? (
+                    <div className="relative">
+                      <img
+                        src={imagePreview || "/placeholder.svg"}
+                        alt="Cover preview"
+                        className="w-full h-64 object-cover rounded-lg border border-border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="sm"
+                        onClick={removeImage}
+                        className="absolute top-2 right-2 cursor-pointer"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <Label
+                      htmlFor="coverImage"
+                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-border shadow-sm rounded-lg cursor-pointer bg-muted/10 hover:bg-muted/30 transition-colors"
+                    >
+                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                        <Upload className="h-10 w-10 text-muted-foreground mb-3" />
+                        <p className="mb-2 text-sm text-foreground font-medium">Click to upload cover image</p>
+                        <p className="text-xs text-muted-foreground">PNG, JPG or WEBP (MAX. 10MB)</p>
+                      </div>
+                      <input
+                        id="coverImage"
+                        type="file"
+                        className="hidden"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                      />
+                    </Label>
+                  )}
                 </div>
               </div>
 

@@ -13,7 +13,7 @@ import { formatDateNum } from "@/lib/utils"
 
 type ItineraryCardProps = ItineraryListItemWithUser
 
-export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, author, is_bookmarked, current_user_id }: ItineraryCardProps) {
+export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, author, is_bookmarked, current_user_id, image_url }: ItineraryCardProps) {
   const supabase = createSupabaseBrowserClient()
 
   const [bookmarked, setBookmarked] = useState(is_bookmarked)
@@ -46,7 +46,7 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
       <Card className="group overflow-hidden bg-card hover:shadow-md transition-all duration-300 border border-border/50">
         <div className="relative aspect-4/3 overflow-hidden">
           <Image
-            src={"/images/placeholder.jpg"}
+            src={image_url || "/images/placeholder.jpg"}
             alt={title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
