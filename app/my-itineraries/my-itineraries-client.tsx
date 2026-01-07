@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, Globe, Lock } from "lucide-react"
 import { ItineraryCard } from "@/components/itinerary-card"
 import { ItineraryListItemWithUser } from "@/types"
+import  Link  from "next/link"
 
 type MyItinerariesClientProps = {
   myItineraries: ItineraryListItemWithUser[]
@@ -38,10 +39,10 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
           <Button
             variant="ghost"
             size="sm"
-            className={`gap-2 rounded-none border-b-2 transition-colors ${
+            className={`gap-2 rounded-none border-b-2 transition-colors cursor-pointer ${
               activeFilter === "all"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-primary text-primary hover:text-primary hover:bg-transparent"
+                : "border-transparent text-muted-foreground hover:text-primary hover:bg-transparent"
             }`}
             onClick={() => setActiveFilter("all")}
           >
@@ -50,10 +51,10 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
           <Button
             variant="ghost"
             size="sm"
-            className={`gap-2 rounded-none border-b-2 transition-colors ${
+            className={`gap-2 rounded-none border-b-2 transition-colors cursor-pointer ${
               activeFilter === "public"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-primary text-primary hover:text-primary hover:bg-transparent"
+                : "border-transparent text-muted-foreground hover:text-primary hover:bg-transparent"
             }`}
             onClick={() => setActiveFilter("public")}
           >
@@ -63,10 +64,10 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
           <Button
             variant="ghost"
             size="sm"
-            className={`gap-2 rounded-none border-b-2 transition-colors ${
+            className={`gap-2 rounded-none border-b-2 transition-colors cursor-pointer ${
               activeFilter === "private"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
+                ? "border-primary text-primary hover:text-primary hover:bg-transparent"
+                : "border-transparent text-muted-foreground hover:text-primary hover:bg-transparent"
             }`}
             onClick={() => setActiveFilter("private")}
           >
@@ -99,9 +100,11 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
             <p className="text-muted-foreground mb-6 max-w-md">
               Start planning your next adventure by creating your first travel itinerary.
             </p>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" />
-              Create Your First Itinerary
+            <Button asChild className="gap-2">
+              <Link href="/create">
+                <Plus className="h-4 w-4" />
+                Create Your First Itinerary
+              </Link>
             </Button>
           </div>
         )}
