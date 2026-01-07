@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Calendar, Heart, Bookmark, Share2, Clock } from "lucide-react"
+import { MapPin, Calendar, Heart, Bookmark, Share2, Clock, Lock } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { ItineraryWithSchedule } from "@/types"
@@ -117,8 +117,10 @@ export default async function ItineraryDetailPage({
             )}
             {/* Itinerary Days */}
             <div className="space-y-6">
-              <h2 className="text-2xl font-semibold">Itinerary</h2>
-
+              <div className="flex items-center gap-2">
+                <h2 className="text-2xl font-semibold">Itinerary</h2>
+                {itinerary.visibility === "private" && <Lock/>}
+              </div>
               {itinerary.itinerary_days.map((day) => (
                 <Card key={day.id} className="p-6 border-border/50">
                   <div className="flex items-center gap-3 mb-6">
