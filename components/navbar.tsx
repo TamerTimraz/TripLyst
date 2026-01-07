@@ -41,14 +41,14 @@ export function Navbar() {
               <div className="hidden md:flex items-center gap-8">
                 <Link
                   href="/home"
-                  className="text-foreground hover:text-foreground/80 transition-colors font-medium"
+                  className="text-foreground hover:text-foreground/70 transition-colors font-medium"
                 >
                   Browse
                 </Link>
 
                 <Link
                   href="/my-itineraries"
-                  className="text-foreground hover:text-foreground/80 transition-colors font-medium"
+                  className="text-foreground hover:text-foreground/70 transition-colors font-medium"
                 >
                   My Itineraries
                 </Link>
@@ -58,7 +58,7 @@ export function Navbar() {
                   className="flex items-center gap-1 cursor-pointer"
                 >
                   <Bookmark className="h-4 w-4" />
-                  <span className="font-medium text-foreground hover:text-foreground/80 transition-colors">
+                  <span className="font-medium text-foreground hover:text-foreground/70 transition-colors">
                     Saved
                   </span>
                 </div>
