@@ -6,18 +6,21 @@ export interface Database {
           id: string
           name: string
           email: string
+          image_url: string | null
           created_at: string
         }
         Insert: {
           id?: string
           name: string
           email: string
+          image_url: string | null
           created_at?: string
         }
         Update: {
           id?: string
           name?: string
           email?: string
+          image_url?: string | null
           created_at?: string
         }
       }
