@@ -1,7 +1,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { PlaneTakeoff, Plus, Bookmark } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
+import { PlaneTakeoff, Plus, Bookmark, User, LogOut, Settings } from "lucide-react"
 import { useAuth } from "@/lib/use-auth"
 import { useAuthModal } from "@/components/auth-modal-context"
 import { useRouter } from "next/navigation"
@@ -69,18 +70,31 @@ export function Navbar() {
                     Create Itinerary
                   </Link>
                 </Button>
-              </div>
 
-              <Button
-                className="cursor-pointer"
-                variant="outline"
-                onClick={async () => {
-                  await signOut()
-                  router.push("/")
-                }}
-              >
-                Sign Out
-              </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Settings className="h-5 w-5 cursor-pointer" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem asChild>
+                      <Link href="/account" className="cursor-pointer">
+                        <User className="h-4 w-4 mr-2" />
+                        Account
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem 
+                      className="text-destructive focus:text-destructive cursor-pointer"
+                      onClick={async () => {
+                        await signOut()
+                        router.push("/")
+                      }}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign Out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </>
           ) : (
             <>
