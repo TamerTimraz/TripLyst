@@ -73,7 +73,7 @@ export function Navbar() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Settings className="h-5 w-5 cursor-pointer" />
+                    <Settings className="h-5 w-5 cursor-pointer hover:text-foreground/70"/>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
