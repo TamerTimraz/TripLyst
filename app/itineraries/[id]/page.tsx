@@ -173,7 +173,7 @@ export default async function ItineraryDetailPage({
                 <div className="flex items-center gap-3">
                   <Avatar className="h-12 w-12">
                     <AvatarImage
-                      src={"/placeholder.svg"}
+                      src={itinerary.author.image_url || undefined}
                       alt={itinerary.author.name}
                     />
                     <AvatarFallback className="bg-primary text-primary-foreground">

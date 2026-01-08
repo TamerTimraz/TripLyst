@@ -19,7 +19,7 @@ export default async function MyItineraries() {
     .select(
       `
       *,
-      author:accounts (name),
+      author:accounts (name, image_url),
       itinerary_bookmarks!left(itinerary_id, account_id)`
     )
     .eq("account_id", user.id)

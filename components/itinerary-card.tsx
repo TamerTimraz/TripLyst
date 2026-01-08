@@ -55,7 +55,7 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
           <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
             <div className="flex items-center gap-2 text-white">
               <Avatar className="h-8 w-8 border-2 border-white/20">
-                <AvatarImage src={"/placeholder.svg"} alt={author.name} />
+                <AvatarImage src={author.image_url || undefined} alt={author.name} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                   {author.name.slice(0, 2).toUpperCase()}
                 </AvatarFallback>

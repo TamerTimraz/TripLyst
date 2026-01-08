@@ -20,7 +20,7 @@ export default async function SavedItineraries() {
       `
       itinerary:itineraries(
         *, 
-        author:accounts (name)
+        author:accounts (name, image_url)
       )
     `
     )

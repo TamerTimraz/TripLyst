@@ -20,7 +20,7 @@ export default async function Home() {
   const { data: allItineraries, error } = await supabase
     .from("itineraries")
     .select(`*,
-      author:accounts (name),
+      author:accounts (name, image_url),
       itinerary_bookmarks!left(itinerary_id, account_id)`)
     .eq("visibility", "public")
     .order("created_at", { ascending: false })
