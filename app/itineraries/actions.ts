@@ -1,8 +1,6 @@
 "use server"
 
 import { createSupabaseServerClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { uploadItineraryImage } from "@/lib/storage/upload-itinerary-image"
 
 interface CreateItineraryInput {
   title: string
@@ -11,7 +9,6 @@ interface CreateItineraryInput {
   startDate: string
   endDate: string
   visibility: "public" | "private"
-  coverImage: File | null
   days: {
     date: string
     activities: {
@@ -59,13 +56,17 @@ export async function createItinerary(input: CreateItineraryInput) {
     throw new Error(error.message)
   }
 
-  // Upload itinerary image to bucket and its URL to the database
-  let imageUrl = null
-  if (input.coverImage) {
-    imageUrl = await uploadItineraryImage(input.coverImage, itineraryId)
-    await supabase.from("itineraries").update({image_url: imageUrl}).eq("id", itineraryId)
-  }
+  return itineraryId
+}
 
-  // Redirect on success
-  redirect(`/itineraries/${itineraryId}`)
+export async function updateItineraryImage(
+  itineraryId: string,
+  imageUrl: string
+) {
+  const supabase = await createSupabaseServerClient()
+
+  await supabase
+    .from("itineraries")
+    .update({ image_url: imageUrl })
+    .eq("id", itineraryId)
 }

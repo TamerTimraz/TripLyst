@@ -9,8 +9,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card } from "@/components/ui/card"
 import { Calendar, MapPin, Plus, X, Globe, Lock, Upload } from "lucide-react"
-import { formatDate } from "@/lib/utils"
-import { createItinerary } from "@/app/itineraries/actions"
+import { convertToJpg, formatDate } from "@/lib/utils"
+import { createItinerary, updateItineraryImage } from "@/app/itineraries/actions"
+import { uploadItineraryImage } from "@/lib/storage/upload-images"
+import { redirect } from "next/navigation"
 
 interface Activity {
   tempKey: string // UI-only key
@@ -110,14 +112,13 @@ export default function CreateItineraryPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    await createItinerary({
+    const itineraryId = await createItinerary({
         title,
         description: description || null,
         destination,
         startDate,
         endDate,
         visibility: isPublic ? "public" : "private",
-        coverImage,
         days: days.map((day) => ({
             date: day.date,
             activities: day.activities.map((a) => ({
@@ -126,6 +127,19 @@ export default function CreateItineraryPage() {
             })),
         })),
     })
+
+    // Upload itinerary image to bucket and its URL to the database
+    if (coverImage) {
+      let jpgFile = coverImage
+      if (coverImage.name.split(".").pop() !== "jpg") {
+        jpgFile = await convertToJpg(coverImage, 0.85, "cover.jpg")
+      }
+      const imageUrl = await uploadItineraryImage(jpgFile, itineraryId)
+      await updateItineraryImage(itineraryId, imageUrl)
+    }
+
+    // Redirect on success
+    redirect(`/itineraries/${itineraryId}`)
   }
 
 
