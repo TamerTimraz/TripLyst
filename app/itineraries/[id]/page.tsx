@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Calendar, Bookmark, Clock, Lock, Trash2 } from "lucide-react"
+import { MapPin, Calendar, Clock, Lock } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { ItineraryWithSchedule } from "@/types"
@@ -9,6 +9,7 @@ import { redirect, notFound } from "next/navigation"
 import { formatDate, formatDateNum } from "@/lib/utils"
 import { DeleteItineraryButton } from "@/components/delete-itinerary-button"
 import { BookmarkButton } from "@/components/bookmark-button"
+import { VisibilityToggleButton } from "@/components/visibility-toggle-button"
 
 export default async function ItineraryDetailPage({
   params,
@@ -200,6 +201,10 @@ export default async function ItineraryDetailPage({
                 </div>
 
                 <div className="space-y-3 pt-4 border-t border-border/50">
+                  {itinerary.account_id === user.id && (
+                    <VisibilityToggleButton itineraryId={itinerary.id} initialVisibility={itinerary.visibility}/>
+                  )}
+              
                   <BookmarkButton
                     itineraryId={itinerary.id}
                     isBookmarked={isBookmarked}
