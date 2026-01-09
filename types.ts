@@ -11,11 +11,12 @@ export type ItineraryWithSchedule = Itinerary & {
   itinerary_days: (ItineraryDay & {
     activities: Activity[]
   })[]
+  itinerary_bookmarks: ItineraryBookmark[]
 }
 
 export type ItineraryListItemWithUser = Itinerary & {
   author: Account
-  is_bookmarked: boolean | null
+  is_bookmarked: boolean
   current_user_id: string
 }
 

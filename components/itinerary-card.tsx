@@ -7,43 +7,17 @@ import { MapPin, Calendar, Bookmark, Heart } from "lucide-react"
 import Image from "next/image"
 import { ItineraryListItemWithUser } from "@/types"
 import Link from "next/link"
-import { createSupabaseBrowserClient } from "@/lib/supabase/client"
-import { useState } from "react"
 import { formatDateNum } from "@/lib/utils"
+import { useBookmark } from "@/lib/use-bookmark"
 
 type ItineraryCardProps = ItineraryListItemWithUser
 
 export function ItineraryCard({ id, title, destination, start_date, end_date, created_at, author, is_bookmarked, current_user_id, image_url }: ItineraryCardProps) {
-  const supabase = createSupabaseBrowserClient()
-
-  const [bookmarked, setBookmarked] = useState(is_bookmarked)
-  
-  const toggleBookmark = async (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    setBookmarked((prev) => !prev) // optimistic update
-
-    const { error } = bookmarked
-      ? await supabase
-          .from("itinerary_bookmarks")
-          .delete()
-          .eq("itinerary_id", id)
-          .eq("account_id", current_user_id)
-      : await supabase.from("itinerary_bookmarks").insert({
-          itinerary_id: id,
-          account_id: current_user_id,
-        })
-
-    if (error) {
-      console.error("Bookmark error:", error)
-      setBookmarked((prev) => !prev) // rollback on failure
-    }
-  }
+  const { bookmarked, toggleBookmark } = useBookmark(id, is_bookmarked, current_user_id)
 
   return (
-    <Link href={`/itineraries/${id}`} className="no-underline">
-      <Card className="group overflow-hidden bg-card hover:shadow-md transition-all duration-300 border border-border/50">
+    <Card className="group overflow-hidden bg-card hover:shadow-md transition-all duration-300 border border-border/50 relative">
+      <Link href={`/itineraries/${id}`} className="no-underline">
         <div className="relative aspect-4/3 overflow-hidden">
           <Image
             src={image_url || "/images/placeholder.jpg"}
@@ -64,14 +38,6 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
                 {author.name}
               </span>
             </div>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={toggleBookmark}
-              className="h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white"
-            >
-              <Bookmark className={bookmarked ? "h-4 w-4 text-yellow-300" : "h-4 w-4"} fill={bookmarked ? "yellow": "none"} />
-            </Button>
           </div>
         </div>
 
@@ -101,7 +67,21 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
             </div>
           </div>
         </div>
-      </Card>
-    </Link>
+      </Link>
+
+      <div className="absolute bottom-43 right-3">
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={toggleBookmark}
+          className="h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white"
+        >
+          <Bookmark
+            className={bookmarked ? "h-4 w-4 text-yellow-300" : "h-4 w-4"}
+            fill={bookmarked ? "yellow" : "none"}
+          />
+        </Button>
+      </div>
+    </Card>
   )
 }

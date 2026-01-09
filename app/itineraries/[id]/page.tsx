@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Calendar, Bookmark, Clock, Lock, Trash2 } from "lucide-react"
@@ -9,6 +8,7 @@ import { ItineraryWithSchedule } from "@/types"
 import { redirect, notFound } from "next/navigation"
 import { formatDate, formatDateNum } from "@/lib/utils"
 import { DeleteItineraryButton } from "@/components/delete-itinerary-button"
+import { BookmarkButton } from "@/components/bookmark-button"
 
 export default async function ItineraryDetailPage({
   params,
@@ -43,9 +43,11 @@ export default async function ItineraryDetailPage({
       *,
       activities (*)
     ),
-    author:accounts (*)
+    author:accounts (*),
+    itinerary_bookmarks (id)
     `)
     .eq("id", id)
+    .eq("itinerary_bookmarks.account_id", user.id)
     .order("day_index", { referencedTable: "itinerary_days", ascending: true })
     .order("position", {
       referencedTable: "itinerary_days.activities",
@@ -62,6 +64,8 @@ export default async function ItineraryDetailPage({
   if (!data) {
     redirect("/home")
   }
+
+  const isBookmarked = data.itinerary_bookmarks.length > 0
 
   const duration =
     Math.ceil(
@@ -128,7 +132,7 @@ export default async function ItineraryDetailPage({
             <div className="space-y-6">
               <div className="flex items-center gap-2">
                 <h2 className="text-2xl font-semibold">Itinerary</h2>
-                {itinerary.visibility === "private" && <Lock/>}
+                {itinerary.visibility === "private" && <Lock />}
               </div>
               {itinerary.itinerary_days.map((day) => (
                 <Card key={day.id} className="p-6 border-border/50">
@@ -196,10 +200,11 @@ export default async function ItineraryDetailPage({
                 </div>
 
                 <div className="space-y-3 pt-4 border-t border-border/50">
-                  <Button className="w-full gap-2 bg-background hover:bg-muted/30 hover:text-foreground cursor-pointer" size="lg" variant="outline">
-                    <Bookmark className="h-4 w-4" />
-                    Bookmark Itinerary
-                  </Button>
+                  <BookmarkButton
+                    itineraryId={itinerary.id}
+                    isBookmarked={isBookmarked}
+                    currentUserId={user.id}
+                  />
 
                   {itinerary.account_id === user.id && (
                     <DeleteItineraryButton itineraryId={itinerary.id} />
