@@ -1,6 +1,7 @@
 "use server"
 
 import { createSupabaseServerClient } from "@/lib/supabase/server"
+import { redirect } from "next/navigation"
 
 interface CreateItineraryInput {
   title: string
@@ -69,4 +70,54 @@ export async function updateItineraryImage(
     .from("itineraries")
     .update({ image_url: imageUrl })
     .eq("id", itineraryId)
+}
+
+export async function deleteItinerary(itineraryId: string) {
+  const supabase = await createSupabaseServerClient()
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    throw new Error("Not authenticated")
+  }
+
+  // Verify valid itinerary
+  const { data: itinerary, error} = await supabase
+    .from("itineraries")
+    .select("id, account_id, image_url")
+    .eq("id", itineraryId)
+    .single()
+
+  if (error || !itinerary) {
+    throw new Error("Itinerary not found")
+  }
+
+  if (itinerary.account_id !== user.id) {
+    throw new Error("Unauthorized")
+  }
+
+  // Delete image from supabase storage (if it exists)
+  if (itinerary.image_url) {
+    const { error: storageError } = await supabase.storage
+      .from("itinerary-images")
+      .remove([`${itineraryId}/cover.jpg`])
+
+    if (storageError) {
+      console.log("Storage error:", storageError)
+    }
+  }
+
+  // Delete itinerary
+  const { error: deleteError } = await supabase
+    .from("itineraries")
+    .delete()
+    .eq("id", itineraryId)
+  
+  if (deleteError) {
+    throw new Error("Failed to delete itinerary")
+  }
+
+  redirect("/home")
 }

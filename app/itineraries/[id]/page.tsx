@@ -2,12 +2,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { MapPin, Calendar, Heart, Bookmark, Share2, Clock, Lock } from "lucide-react"
+import { MapPin, Calendar, Bookmark, Clock, Lock, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 import { ItineraryWithSchedule } from "@/types"
 import { redirect, notFound } from "next/navigation"
 import { formatDate, formatDateNum } from "@/lib/utils"
+import { DeleteItineraryButton } from "@/components/delete-itinerary-button"
 
 export default async function ItineraryDetailPage({
   params,
@@ -25,6 +26,14 @@ export default async function ItineraryDetailPage({
   }
 
   const supabase = await createSupabaseServerClient()
+
+  const {
+    data: { user }
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/")
+  }
 
   const { data, error } = await supabase
     .from("itineraries")
@@ -186,29 +195,16 @@ export default async function ItineraryDetailPage({
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 pt-4 border-t border-border/50">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 gap-2 bg-transparent"
-                  >
-                    <Heart className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1 gap-2 bg-transparent"
-                  >
+                <div className="space-y-3 pt-4 border-t border-border/50">
+                  <Button className="w-full gap-2 bg-background hover:bg-muted/30 hover:text-foreground cursor-pointer" size="lg" variant="outline">
                     <Bookmark className="h-4 w-4" />
+                    Bookmark Itinerary
                   </Button>
-                  <Button variant="outline" size="icon">
-                    <Share2 className="h-4 w-4" />
-                  </Button>
-                </div>
 
-                <Button className="w-full" size="lg">
-                  Save Itinerary
-                </Button>
+                  {itinerary.account_id === user.id && (
+                    <DeleteItineraryButton itineraryId={itinerary.id} />
+                  )}
+                </div>
               </div>
             </Card>
 
