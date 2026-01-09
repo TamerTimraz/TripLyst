@@ -119,5 +119,6 @@ export async function deleteItinerary(itineraryId: string) {
     throw new Error("Failed to delete itinerary")
   }
 
-  redirect("/home")
+  // Redirect to my itineraries on success
+  redirect("/my-itineraries")
 }
