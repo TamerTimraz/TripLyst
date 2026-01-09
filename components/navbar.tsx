@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu"
-import { PlaneTakeoff, Plus, Bookmark, User, LogOut, Settings } from "lucide-react"
+import { PlaneTakeoff, Plus, Bookmark, User, LogOut, UserCog } from "lucide-react"
 import { useAuth } from "@/lib/use-auth"
 import { useAuthModal } from "@/components/auth-modal-context"
 import { useRouter } from "next/navigation"
@@ -73,7 +73,7 @@ export function Navbar() {
 
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Settings className="h-5 w-5 cursor-pointer hover:text-foreground/70"/>
+                    <UserCog className="h-5 w-5 cursor-pointer hover:text-foreground/70"/>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56 bg-background">
                     <DropdownMenuItem asChild>
@@ -106,18 +106,12 @@ export function Navbar() {
                 >
                   Features
                 </a>
-                <a
-                  href="#how-it-works"
-                  className="text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  How it Works
-                </a>
               </div>
 
               <Button
                 variant="ghost"
                 onClick={openSignIn}
-                className="cursor-pointer"
+                className="cursor-pointer hover:text-foreground hover:bg-accent/10"
               >
                 Sign In
               </Button>

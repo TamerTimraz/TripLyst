@@ -80,10 +80,10 @@ export default function AccountClient({account_id, account_name, account_email, 
           {/* Header */}
           <div>
             <h1 className="text-4xl font-bold text-foreground">
-              Profile Settings
+              Account Settings
             </h1>
             <p className="text-muted-foreground mt-2">
-              Manage your account information and preferences
+              Manage your account information
             </p>
           </div>
 

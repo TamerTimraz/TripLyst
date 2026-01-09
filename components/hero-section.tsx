@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { useAuthModal } from "@/components/auth-modal-context"
 
 export function HeroSection() {
-  const { openSignUp } = useAuthModal()
+  const { openSignUp, openSignIn } = useAuthModal()
 
   return (
     <section className="bg-background py-20 md:py-32">
@@ -27,9 +27,10 @@ export function HeroSection() {
               Get Started for Free
             </Button>
             <Button
+              onClick={openSignIn}
               variant="outline"
               size="lg"
-              className="text-base border-border text-foreground hover:bg-muted bg-transparent cursor-pointer"
+              className="text-base border-border text-foreground hover:bg-accent/10 hover:text-foreground bg-transparent cursor-pointer"
             >
               Explore Itineraries
             </Button>
