@@ -54,11 +54,11 @@ export default async function Home() {
 
           <div className="max-w-2xl mx-auto">
             <div className="flex gap-3">
-              <div className="relative flex-1">
+              <div className="relative flex-1 shadow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search destinations, activities, or travelers..."
-                  className="pl-10 h-12 bg-card"
+                  className="pl-10 h-12 bg-background"
                 />
               </div>
               <Button

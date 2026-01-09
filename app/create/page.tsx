@@ -172,7 +172,7 @@ export default function CreateItineraryPage() {
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  className="mt-1.5"
+                  className="mt-1.5 bg-background"
                 />
               </div>
 
@@ -188,7 +188,7 @@ export default function CreateItineraryPage() {
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     required
-                    className="pl-10"
+                    className="pl-10 bg-background"
                   />
                 </div>
               </div>
@@ -216,7 +216,7 @@ export default function CreateItineraryPage() {
                   ) : (
                     <Label
                       htmlFor="coverImage"
-                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-border shadow-sm rounded-lg cursor-pointer bg-muted/10 hover:bg-muted/30 transition-colors"
+                      className="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-border shadow-sm rounded-lg cursor-pointer bg-background hover:bg-muted/10 transition-colors"
                     >
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         <Upload className="h-10 w-10 text-muted-foreground mb-3" />
@@ -240,7 +240,7 @@ export default function CreateItineraryPage() {
                   <Label htmlFor="startDate" className="text-foreground">
                     <p>Start Date <span className="text-red-600">*</span></p>
                   </Label>
-                  <div className="relative mt-1.5">
+                  <div className="relative mt-1.5 bg-background">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="startDate"
@@ -257,7 +257,7 @@ export default function CreateItineraryPage() {
                   <Label htmlFor="endDate" className="text-foreground">
                     <p>End Date <span className="text-red-600">*</span></p>
                   </Label>
-                  <div className="relative mt-1.5">
+                  <div className="relative mt-1.5 bg-background">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="endDate"
@@ -282,7 +282,7 @@ export default function CreateItineraryPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={4}
-                  className="mt-1.5"
+                  className="mt-1.5 bg-background"
                 />
               </div>
 
@@ -362,7 +362,7 @@ export default function CreateItineraryPage() {
                                 )
                               }
                               required
-                              className="mt-1 h-9 text-sm"
+                              className="mt-1 h-9 text-sm bg-background"
                             />
                           </div>
 
@@ -395,7 +395,7 @@ export default function CreateItineraryPage() {
                               )
                             }
                             rows={2}
-                            className="mt-1 text-sm"
+                            className="mt-1 text-sm bg-background"
                           />
                         </div>
                       </div>
