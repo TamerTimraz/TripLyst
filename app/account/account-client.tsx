@@ -120,7 +120,7 @@ export default function AccountClient({account_id, account_name, account_email, 
                     />
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    JPG, PNG or GIF. Max size 5MB
+                    JPG, PNG or WEBP. Max size 50MB
                   </p>
                 </div>
               </div>

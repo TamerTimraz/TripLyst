@@ -57,7 +57,7 @@ export default async function SavedItineraries() {
               <div key={itinerary.id} className="relative">
                 <ItineraryCard {...itinerary} />
                 {itinerary.visibility === "private" && (
-                  <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-accent/90 backdrop-blur-sm text-xs font-medium flex items-center gap-1">
+                  <div className="absolute top-3 right-4 px-3 py-1 rounded-full bg-accent/30 backdrop-blur-sm text-xs font-medium flex items-center gap-1">
                     <Lock className="h-3 w-3" />
                     Private
                   </div>
