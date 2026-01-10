@@ -20,7 +20,7 @@ export function ItineraryCard({ id, title, destination, start_date, end_date, cr
       <Link href={`/itineraries/${id}`} className="no-underline">
         <div className="relative aspect-4/3 overflow-hidden">
           <Image
-            src={image_url || "/images/placeholder.jpg"}
+            src={image_url || "/images/default-image.png"}
             alt={title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"

@@ -84,7 +84,7 @@ export default async function ItineraryDetailPage({
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-100 w-full">
         <Image
-          src={itinerary.image_url || "/images/placeholder.jpg"}
+          src={itinerary.image_url || "/images/default-image.png"}
           alt={itinerary.title}
           fill
           className="object-cover"
