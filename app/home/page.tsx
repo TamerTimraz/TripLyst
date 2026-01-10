@@ -6,7 +6,14 @@ import { ItineraryCard } from "@/components/itinerary-card"
 import { ItineraryListItemWithUser } from "@/types"
 import { Input } from "@/components/ui/input"
 
-export default async function Home() {
+export default async function Home({ 
+  searchParams
+}: { 
+  searchParams: Promise<{
+    search?: string 
+    sort?: "newest" | "oldest"
+  }>
+}) {
   const supabase = await createSupabaseServerClient()
 
   const {
@@ -17,14 +24,29 @@ export default async function Home() {
     redirect("/")
   }
 
-  const { data: allItineraries, error } = await supabase
+  const params = await searchParams
+
+  const search = params.search?.trim()
+  const sort = params.sort ?? "newest"
+
+  let query = supabase
     .from("itineraries")
-    .select(`*,
+    .select(
+      `*,
       author:accounts (name, image_url),
-      itinerary_bookmarks!left(itinerary_id, account_id)`)
+      itinerary_bookmarks!left(itinerary_id, account_id)`
+    )
     .eq("visibility", "public")
-    .order("created_at", { ascending: false })
-    .overrideTypes<ItineraryListItemWithUser[]>()
+  
+  if (search) {
+    query = query.ilike("destination", `%${search}%`)
+  }
+
+  query = query.order("created_at", {
+    ascending: sort === "oldest"
+  })
+
+  const { data: allItineraries, error } = await query.overrideTypes<ItineraryListItemWithUser[]>()
 
   if (error) {
     console.error("Error fetching itineraries:", error.message)
@@ -53,23 +75,30 @@ export default async function Home() {
           </div>
 
           <div className="max-w-2xl mx-auto">
-            <div className="flex gap-3">
+            <form method="GET" className="flex gap-3 items-center">
               <div className="relative flex-1 shadow">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search destinations, activities, or travelers..."
+                  name="search"
+                  defaultValue={params.search}
+                  placeholder="Search destinations..."
                   className="pl-10 h-12 bg-background"
                 />
               </div>
-              <Button
-                variant="outline"
-                size="lg"
-                className="gap-2 bg-transparent"
+
+              <select
+                name="sort"
+                defaultValue={params.sort ?? "newest"}
+                className="h-12 rounded-md border bg-background px-3 text-sm cursor-pointer"
               >
-                <SlidersHorizontal className="h-4 w-4" />
-                Filters
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+              </select>
+
+              <Button type="submit" size="lg" className="h-12 cursor-pointer">
+                Apply
               </Button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
@@ -86,11 +115,28 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {itineraries.map((itinerary) => (
-              <ItineraryCard key={itinerary.id} {...itinerary} />
-            ))}
-          </div>
+          {itineraries.length === 0 ? (
+            <div className="text-center py-16 px-4">
+              <div className="max-w-md mx-auto">
+                <p className="text-xl font-semibold text-foreground mb-2">
+                  No itineraries found
+                </p>
+                <p className="text-muted-foreground mb-6">
+                  Be the first to share your travel adventures with the
+                  community!
+                </p>
+                <Button size="lg" asChild>
+                  <a href="/create">Create Your First Itinerary</a>
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {itineraries.map((itinerary) => (
+                <ItineraryCard key={itinerary.id} {...itinerary} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
