@@ -25,6 +25,7 @@ export default function AccountClient({account_id, account_name, account_email, 
   const [email] = useState(account_email)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(image_url)
+  const [message, setMessage] = useState("")
 
   const nameChanged = name.trim() !== account_name.trim()
   const imageChanged = imageFile !== null
@@ -48,19 +49,28 @@ export default function AccountClient({account_id, account_name, account_email, 
       return
     }
 
-    let imageUrl = null
-    if (imageChanged) {
-      let jpgFile = imageFile
-      if (imageFile.name.split(".").pop() !== "jpg") {
-        jpgFile = await convertToJpg(imageFile, 0.85, "profilePic.jpg")
+    try {
+      let imageUrl = null
+      if (imageChanged) {
+        let jpgFile = imageFile
+        if (imageFile.name.split(".").pop() !== "jpg") {
+          jpgFile = await convertToJpg(imageFile, 0.85, "profilePic.jpg")
+        }
+        imageUrl = await uploadProfileImage(jpgFile, account_id)
       }
-      imageUrl = await uploadProfileImage(jpgFile, account_id)
-    }
 
-    await updateAccount({
-      name: nameChanged ? name : null,
-      imageUrl
-    })
+      await updateAccount({
+        name: nameChanged ? name : null,
+        imageUrl
+      })
+      
+      setMessage("Changes saved successfully!")
+      setTimeout(() => {
+        setMessage("")
+      }, 2000)
+    } catch (error) {
+      setMessage("Something went wrong. Please try again.")
+    }
   }
 
   const handleCancel = () => {
@@ -114,7 +124,7 @@ export default function AccountClient({account_id, account_name, account_email, 
                     <Input
                       id="profile-image"
                       type="file"
-                      accept="image/jpeg"
+                      accept="image/*"
                       className="hidden"
                       onChange={handleImageChange}
                     />
@@ -134,7 +144,9 @@ export default function AccountClient({account_id, account_name, account_email, 
               <Input
                 id="name"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                }}
                 placeholder="Enter your name"
                 className="max-w-md bg-background"
               />
@@ -167,6 +179,9 @@ export default function AccountClient({account_id, account_name, account_email, 
               <Button variant="outline" onClick={handleCancel} className="cursor-pointer">
                 Cancel
               </Button>
+              {message && (
+                <p>{message}</p>
+              )}
             </div>
           </div>
         </div>

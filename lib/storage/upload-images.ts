@@ -17,7 +17,7 @@ export async function uploadProfileImage(file: File, accountId: string) {
       .from("profile-images")
       .getPublicUrl(filePath)
 
-    return data.publicUrl
+    return `${data.publicUrl}?v=${Date.now()}`
 }
 
 export async function uploadItineraryImage(file: File, itineraryId: string) {
