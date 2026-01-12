@@ -98,12 +98,12 @@ export default function MyItinerariesClient({ myItineraries }: MyItinerariesClie
             </div>
             <h3 className="text-xl font-semibold mb-2 text-foreground">No itineraries yet</h3>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Start planning your next adventure by creating your first travel itinerary.
+              Start planning your next adventure by creating a travel itinerary.
             </p>
             <Button asChild className="gap-2">
               <Link href="/create">
                 <Plus className="h-4 w-4" />
-                Create Your First Itinerary
+                Create Itinerary
               </Link>
             </Button>
           </div>

@@ -126,7 +126,7 @@ export default async function Home({
                   community!
                 </p>
                 <Button size="lg" asChild>
-                  <a href="/create">Create Your First Itinerary</a>
+                  <a href="/create">Create Itinerary</a>
                 </Button>
               </div>
             </div>
