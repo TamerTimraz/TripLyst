@@ -64,7 +64,7 @@ JSON format:
         contents: prompt,
     })
 
-    console.log(response.text)
+    //console.log(response.text)
 
     if (response.text) {
         try {
