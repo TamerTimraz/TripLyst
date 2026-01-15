@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TripLyst
 
-## Getting Started
+TripLyst is a full-stack travel itinerary planning web application that allows users to create, manage, and share custom travel itineraries. Users can build itineraries manually or generate them with AI assistance, explore public itineraries created by others, and bookmark trips for future reference.
 
-First, run the development server:
+The application is built with modern web technologies and focuses on secure data access, scalability, and a clean user experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🌐 Live Demo
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔗 **[https://trip-lyst.vercel.app](https://trip-lyst.vercel.app)**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Features
 
-To learn more about Next.js, take a look at the following resources:
+* **User Authentication** – Secure sign-up and login using Supabase Auth
+* **Itinerary Creation** – Create detailed travel itineraries manually or with AI assistance
+* **AI-Powered Generation** – Generate itineraries using the Google Gemini API with validation and constraints
+* **Public & Private Itineraries** – Control visibility of itineraries
+* **Discovery & Search** – Browse and search public itineraries by destination
+* **Bookmarking** – Save and manage bookmarked itineraries
+* **Image Uploads** – Upload and manage profile and itinerary images
+* **Access Control** – Ownership and visibility enforced using Row Level Security (RLS)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🛠️ Tech Stack
 
-## Deploy on Vercel
+### Frontend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+* **Next.js** (App Router)
+* **React**
+* **TypeScript**
+* **Tailwind CSS**
+* **shadcn/ui**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Backend / Infrastructure
+
+* **Supabase**
+  * Authentication
+  * PostgreSQL Database
+  * Row Level Security (RLS)
+  * Storage (Images)
+* **Google Gemini API** – AI itinerary generation
+* **Vercel** – Deployment and hosting
+
